@@ -11,13 +11,20 @@ class PrivateChannel(commands.Cog):
         super().__init__()
         self.bot = bot
         self.all_channel = []
+        self.private = 0
+        self.category = 0
+
+    @commands.command()
+    async def start_private(self, ctx):
+        self.category = await ctx.guild.create_category_channel(name = 'Приватные каналы', position = 0)
+        self.private = await ctx.guild.create_voice_channel(name = 'создать канал [+]', category = self.category)
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member: discord.Member, before: discord.VoiceState, after: discord.VoiceState):
 
-        category = private['category']
+        category = self.category.id
 
-        if after.channel is not None and member.voice.channel.id == private['channel'] and member.voice.channel is not None:
+        if after.channel is not None and member.voice.channel.id == self.private.id and member.voice.channel is not None:
 
             try:
                 category_main: discord.CategoryChannel = get(member.guild.categories, id=category)
