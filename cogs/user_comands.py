@@ -97,6 +97,26 @@ class User(commands.Cog):
         await ctx.send(embed=embed)
 
 
+    # помощь
+    @commands.command()
+    async def help(self, ctx):
+        embed = discord.Embed(
+            description=
+                            f'\n'
+                            f'**Комнады:**\n'
+                            f'>server - информация о сервере\n'
+                            f'>ban [ник] [причина] - бан участника\n'
+                            f'>kick [ник] [причина] - кик участника\n'
+                            f'>dice - бросок кубика\n'
+                            f'>clear [число] - очистка сообщений в канале \n'
+                            f'>song [ссылка с ютуба] - проигрыш музыки\n'
+                            f'>stop - остановка музыки\n'
+                            f'>create_private - создания категории с приватными комнатами',
+            
+            сolor=ctx.author.color)
+        await ctx.send(embed=embed)
+
+
 
 def setup(bot: commands.Bot):
     bot.add_cog(User(bot))
