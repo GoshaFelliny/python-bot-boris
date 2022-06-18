@@ -26,9 +26,13 @@ class Music(commands.Cog):
         vc.play(discord.FFmpegPCMAudio(executable="ffmpeg\\ffmpeg.exe", source=url, **FFMPEG_OPTIONS))
 
 
+    #отключения бота
     @commands.command()
-    async def stop(self):
-        await disconnect
+    async def stop(self, ctx):
+        await ctx.voice_client.disconnect()
+        await ctx.message.delete()
+        await ctx.send(f'Проигрышь остановлен')
+
 
 
 
