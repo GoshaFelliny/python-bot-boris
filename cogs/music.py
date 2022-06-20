@@ -3,8 +3,9 @@ from settings.config_local import YDL_OPTIONS, FFMPEG_OPTIONS
 from discord.ext import commands
 from youtube_dl import YoutubeDL
 
-class Music(commands.Cog):
 
+class Music(commands.Cog):
+    
     def __init__(self, bot: commands.Bot) -> None:
         super().__init__()
         self.bot = bot
@@ -12,6 +13,7 @@ class Music(commands.Cog):
 
     @commands.command()
     async def song(self, ctx, *, arg):
+        '''подключение бота'''
         vc = await ctx.message.author.voice.channel.connect()
 
         with YoutubeDL(YDL_OPTIONS) as ydl:
@@ -26,9 +28,9 @@ class Music(commands.Cog):
         vc.play(discord.FFmpegPCMAudio(executable="ffmpeg\\ffmpeg.exe", source=url, **FFMPEG_OPTIONS))
 
 
-    #отключения бота
     @commands.command()
     async def stop(self, ctx):
+        '''Отключение бота'''
         await ctx.voice_client.disconnect()
         await ctx.message.delete()
         await ctx.send(f'Проигрышь остановлен')
