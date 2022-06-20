@@ -14,11 +14,13 @@ class PrivateChannel(commands.Cog):
         self.private = 0
         self.category = 0
 
+        
     @commands.command()
     async def start_private(self, ctx):
         self.category = await ctx.guild.create_category_channel(name = 'Приватные каналы', position = 0)
         self.private = await ctx.guild.create_voice_channel(name = 'создать канал [+]', category = self.category)
 
+        
     @commands.Cog.listener()
     async def on_voice_state_update(self, member: discord.Member, before: discord.VoiceState, after: discord.VoiceState):
 
@@ -49,5 +51,6 @@ class PrivateChannel(commands.Cog):
             except Exception as e:
                 logging.exception(e)
 
+                
 def setup(bot: commands.Bot):
     bot.add_cog(PrivateChannel(bot))
