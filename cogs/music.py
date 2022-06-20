@@ -5,15 +5,13 @@ from youtube_dl import YoutubeDL
 
 
 class Music(commands.Cog):
-    
     def __init__(self, bot: commands.Bot) -> None:
         super().__init__()
         self.bot = bot
 
-
     @commands.command()
     async def song(self, ctx, *, arg):
-        '''подключение бота'''
+        """воспроизведение трека"""
         vc = await ctx.message.author.voice.channel.connect()
 
         with YoutubeDL(YDL_OPTIONS) as ydl:
@@ -24,18 +22,15 @@ class Music(commands.Cog):
 
         url = info['formats'][0]['url']
 
-        await ctx.send(f'Boris play now: {arg}')
+        await ctx.send(f'Борис играет: {arg}')
         vc.play(discord.FFmpegPCMAudio(executable="ffmpeg\\ffmpeg.exe", source=url, **FFMPEG_OPTIONS))
-
 
     @commands.command()
     async def stop(self, ctx):
-        '''Отключение бота'''
+        """отключения бота"""
         await ctx.voice_client.disconnect()
         await ctx.message.delete()
         await ctx.send(f'Проигрышь остановлен')
-
-
 
 
 def setup(bot):

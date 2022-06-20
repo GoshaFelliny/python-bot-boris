@@ -1,7 +1,6 @@
 import logging
 
 import discord
-from settings.config_local import private
 from discord.ext import commands
 from discord.utils import get
 
@@ -14,19 +13,25 @@ class PrivateChannel(commands.Cog):
         self.private = 0
         self.category = 0
 
-        
     @commands.command()
-    async def start_private(self, ctx):
-        self.category = await ctx.guild.create_category_channel(name = 'Приватные каналы', position = 0)
-        self.private = await ctx.guild.create_voice_channel(name = 'создать канал [+]', category = self.category)
+    async def create_private(self, ctx):
+        """создания приаватных каналов"""
+        self.category = await ctx.guild.create_category_channel(name='Приватные каналы', position=0)
+        self.private = await ctx.guild.create_voice_channel(name='создать канал [+]', category=self.category)
 
-        
     @commands.Cog.listener()
-    async def on_voice_state_update(self, member: discord.Member, before: discord.VoiceState, after: discord.VoiceState):
+    async def on_voice_state_update(
+            self,
+            member: discord.Member,
+            before: discord.VoiceState,
+            after: discord.VoiceState
+    ):
+        """подключение в приватные каналы"""
 
-        category = self.category.id
+        category = int(self.category.id)
 
-        if after.channel is not None and member.voice.channel.id == self.private.id and member.voice.channel is not None:
+        if after.channel is not None and member.voice.channel.id\
+                == self.private.id and member.voice.channel is not None:
 
             try:
                 category_main: discord.CategoryChannel = get(member.guild.categories, id=category)
@@ -51,6 +56,6 @@ class PrivateChannel(commands.Cog):
             except Exception as e:
                 logging.exception(e)
 
-                
+
 def setup(bot: commands.Bot):
     bot.add_cog(PrivateChannel(bot))
