@@ -6,42 +6,43 @@ from discord.ext import commands
 
 class User(commands.Cog):
 
+    
     def __init__(self, bot):
         self.bot = bot
 
-    #бот включен
+        
     @commands.Cog.listener()
+    '''бот подключен'''
     async def on_ready(self):
         print("Boris connected!")
 
 
-    #бросок кубика
     @commands.command()
     async def dice(self, ctx):
+        '''бросок кубика'''
         author = ctx.message.author
         dice1 = random.randint(1, 6)
         await ctx.send(f'{author.mention} выбросил {dice1} 🎲')
 
 
-    #очистка сообщений
     @commands.command()
     @commands.has_permissions(administrator = True)
     async def clear(self, ctx, *, amout):
+        '''очистка сообщений'''
         lim = int(amout)
         await ctx.channel.purge(limit=lim)
 
 
-    #информация о разработчике
     @commands.command()
     async def author(self, ctx):
+        '''информация о разработчике'''
         await ctx.send(components=[UI_Discord.BtnAut])
 
 
-
-    #кик на сервере
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def kick(self, ctx, member: discord.Member, **reason):
+        '''информация о разработчике'''
         try:
             await ctx.send(f'{member} кикнут по причине {reason}')
             await member.kick()
@@ -50,19 +51,14 @@ class User(commands.Cog):
             await ctx.send("You don`t have permmision")
 
 
-    #бан на сервере
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def ban(self, member: discord.Member, *reason):
-        try:
+        '''бан на сервере'''
             await ctx.send(f'{member} забанен по причине {reason}')
             await member.ban()
 
-        finally:
-            ctx.send("You don`t have permmision")
 
-
-    #получение id роли (только для разработчка)
     @commands.command()
     async def getrole(self, ctx, role: discord.Role):
         if ctx.author.id == 299829027571761153:
@@ -71,9 +67,10 @@ class User(commands.Cog):
         else:
             await ctx.send("You don`t have permmision")
 
-    # информация о сервере
+
     @commands.command()
     async def server(self, ctx):
+        '''информация о сервеере'''
         embed = discord.Embed(
             description=f'**Информация о сервере** **{ctx.guild.name}**\n'
                         f'\n'
@@ -100,6 +97,7 @@ class User(commands.Cog):
     # помощь
     @commands.command()
     async def help(self, ctx):
+        '''помощь'''
         embed = discord.Embed(
             description=
                             f'\n'
@@ -115,7 +113,6 @@ class User(commands.Cog):
             
             сolor=ctx.author.color)
         await ctx.send(embed=embed)
-
 
 
 def setup(bot: commands.Bot):
